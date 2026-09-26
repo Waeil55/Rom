@@ -1,12 +1,16 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllDiseases, getAllSystems, getAllTags, searchDiseases } from '../lib/diseases'
+import { getAllSymptoms, getSymptomFullScript } from '../lib/symptoms'
 import { BackButton } from '../components/BackButton'
+import { ListenButton } from '../components/ListenButton'
 
 export function Diseases() {
   const [query, setQuery] = useState('')
   const [system, setSystem] = useState<string>('All')
   const [tag, setTag] = useState<string>('All')
+  const [openSymptom, setOpenSymptom] = useState<string | null>(null)
+  const symptoms = useMemo(() => getAllSymptoms(), [])
 
   const systems = useMemo(() => ['All', ...getAllSystems()], [])
   const tags = useMemo(() => ['All', ...getAllTags()], [])
@@ -97,6 +101,52 @@ export function Diseases() {
         ))}
         {results.length === 0 && <p className="text-slate-400">No diseases match your filters.</p>}
       </div>
+
+      <section>
+        <h2 className="mb-3 text-lg font-semibold">High-yield symptoms ({symptoms.length})</h2>
+        <div className="space-y-2">
+          {symptoms.map((s) => {
+            const open = openSymptom === s.id
+            return (
+              <div
+                key={s.id}
+                className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5"
+              >
+                <button
+                  onClick={() => setOpenSymptom(open ? null : s.id)}
+                  className="flex w-full items-center justify-between text-left"
+                >
+                  <span className="font-semibold">{s.symptom}</span>
+                  <span className="text-xs text-slate-400">{open ? 'Hide' : 'Show'}</span>
+                </button>
+                {open && (
+                  <div className="mt-3 space-y-2 text-sm">
+                    <ListenButton label={`${s.symptom} — full detail`} text={getSymptomFullScript(s)} size="md" />
+                    {s.redFlags.length > 0 && (
+                      <p>
+                        <span className="font-semibold text-red-600 dark:text-red-400">Red flags: </span>
+                        {s.redFlags.join('; ')}
+                      </p>
+                    )}
+                    <p>
+                      <span className="font-semibold">Characterization: </span>
+                      {s.characterization}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Differentials: </span>
+                      {s.differentials}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Diagnostic approach: </span>
+                      {s.diagnosticApproach}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </section>
     </div>
   )
 }

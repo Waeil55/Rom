@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllLocalMedicines } from '../lib/localMeds'
 import { fetchDbMedicines } from '../lib/dbMedicines'
+import { getAllLibraryMedicines } from '../lib/medicineLibrary'
 import type { Medicine } from '../lib/types'
 import { ListenButton } from '../components/ListenButton'
 
@@ -12,7 +13,10 @@ export function Learn() {
     void fetchDbMedicines().then(setDbMeds)
   }, [])
 
-  const allMeds = useMemo(() => [...getAllLocalMedicines(), ...dbMeds], [dbMeds])
+  const allMeds = useMemo(
+    () => [...getAllLocalMedicines(), ...getAllLibraryMedicines(), ...dbMeds],
+    [dbMeds]
+  )
 
   const rows = useMemo(() => {
     const byClass = new Map<string, Medicine[]>()

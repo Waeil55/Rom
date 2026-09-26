@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getMedicineById } from '../lib/openfda'
 import { getLocalMedicineById, getRelatedLocalMedicines, enrichWithOpenFda, isLocalId } from '../lib/localMeds'
 import { getDbMedicineById, isDbId } from '../lib/dbMedicines'
+import { getLibraryMedicineById, getRawLibraryMedicine, isLibraryId } from '../lib/medicineLibrary'
 import type { Medicine, MedicineSection } from '../lib/types'
 import { useAppStore } from '../store/useAppStore'
 import { useListen } from '../components/ListenContext'
@@ -54,6 +55,16 @@ export function MedicineDetail() {
         return
       }
 
+      if (isLibraryId(id!)) {
+        const libMed = getLibraryMedicineById(id!)
+        if (!cancelled) {
+          setMedicine(libMed)
+          setLoading(false)
+          if (libMed) addRecentlyViewed({ medicineId: libMed.id, brandName: libMed.brandName, genericName: libMed.genericName })
+        }
+        return
+      }
+
       if (isDbId(id!)) {
         const dbMed = await getDbMedicineById(id!)
         if (!cancelled) {
@@ -91,6 +102,7 @@ export function MedicineDetail() {
 
   const bookmarked = bookmarks.includes(medicine.id)
   const related = isLocalId(medicine.id) ? getRelatedLocalMedicines(medicine) : []
+  const rawLibrary = isLibraryId(medicine.id) ? getRawLibraryMedicine(medicine.id) : null
 
   return (
     <div className="space-y-6">
@@ -112,6 +124,44 @@ export function MedicineDetail() {
           {bookmarked ? <BookmarkSolid className="h-6 w-6" /> : <BookmarkIcon className="h-6 w-6" />}
         </button>
       </div>
+
+      {rawLibrary?.blackBoxWarning && (
+        <div className="rounded-[28px] border-2 border-red-300 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+          <p className="text-xs font-bold uppercase tracking-wide text-red-700 dark:text-red-400">⚠ Boxed Warning</p>
+          <p className="mt-1 text-sm text-red-800 dark:text-red-300">{rawLibrary.blackBoxWarning}</p>
+        </div>
+      )}
+
+      {rawLibrary && (rawLibrary.pregnancy || rawLibrary.schedule || rawLibrary.nursing) && (
+        <div className="flex flex-wrap gap-2">
+          {rawLibrary.schedule && (
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              Schedule: {rawLibrary.schedule}
+            </span>
+          )}
+          {rawLibrary.pregnancy && (
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              Pregnancy category: {rawLibrary.pregnancy}
+            </span>
+          )}
+          {rawLibrary.nursing && (
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              Nursing: {rawLibrary.nursing}
+            </span>
+          )}
+        </div>
+      )}
+
+      {rawLibrary?.mnemonics && rawLibrary.mnemonics.length > 0 && (
+        <div className="rounded-[28px] border border-lilac-300 bg-lilac-100/50 p-4 dark:border-lilac-400/30 dark:bg-lilac-400/10">
+          <p className="text-xs font-bold uppercase tracking-wide text-lilac-500">Mnemonics</p>
+          <ul className="mt-1 ml-4 list-disc text-sm text-slate-600 dark:text-slate-300">
+            {rawLibrary.mnemonics.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2">
         <ListenButton

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { searchMedicines } from '../lib/openfda'
 import { searchLocalMedicines } from '../lib/localMeds'
 import { fetchDbMedicines } from '../lib/dbMedicines'
+import { searchLibraryMedicines } from '../lib/medicineLibrary'
 import type { Medicine } from '../lib/types'
 import { useAppStore } from '../store/useAppStore'
 import { BookmarkIcon } from '@heroicons/react/24/outline'
@@ -22,7 +23,8 @@ export function Medicines() {
     setLoading(true)
     setErrorMsg(null)
     const local = searchLocalMedicines(q)
-    setMedicines(local)
+    const libraryMatches = searchLibraryMedicines(q)
+    setMedicines([...local, ...libraryMatches])
 
     const term = q.trim().toLowerCase()
     fetchDbMedicines().then((dbMeds) => {
@@ -41,7 +43,7 @@ export function Medicines() {
     searchMedicines(q, 30)
       .then((res) => {
         if (cancelled) return
-        const seenGenerics = new Set(local.map((m) => m.genericName.toLowerCase()))
+        const seenGenerics = new Set([...local, ...libraryMatches].map((m) => m.genericName.toLowerCase()))
         const extra = res.filter((m) => !seenGenerics.has(m.genericName.toLowerCase()))
         setMedicines((prev) => [...prev, ...extra])
       })
@@ -62,7 +64,7 @@ export function Medicines() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Medicines</h1>
-        <p className="text-slate-500">Search the full drug reference, powered by OpenFDA label data.</p>
+        <p className="text-slate-500">Search the full drug reference — curated Day 1 set, extended library, and OpenFDA label data.</p>
       </div>
 
       <form

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getMedicineById } from '../lib/openfda'
 import { getAllLocalMedicines, getLocalMedicineById, isLocalId } from '../lib/localMeds'
 import { fetchDbMedicines, getDbMedicineById, isDbId } from '../lib/dbMedicines'
+import { getAllLibraryMedicines, getLibraryMedicineById, isLibraryId } from '../lib/medicineLibrary'
 import type { Medicine } from '../lib/types'
 
 export function useStudyPool(medicineId?: string | null) {
@@ -13,14 +14,16 @@ export function useStudyPool(medicineId?: string | null) {
     async function load() {
       setLoading(true)
       const dbMeds = await fetchDbMedicines()
-      const fullPool = [...getAllLocalMedicines(), ...dbMeds]
+      const fullPool = [...getAllLocalMedicines(), ...getAllLibraryMedicines(), ...dbMeds]
 
       if (medicineId) {
         const single = isLocalId(medicineId)
           ? getLocalMedicineById(medicineId)
-          : isDbId(medicineId)
-            ? await getDbMedicineById(medicineId)
-            : await getMedicineById(medicineId)
+          : isLibraryId(medicineId)
+            ? getLibraryMedicineById(medicineId)
+            : isDbId(medicineId)
+              ? await getDbMedicineById(medicineId)
+              : await getMedicineById(medicineId)
         const rest = fullPool.filter((m) => m.id !== medicineId)
         if (!cancelled) setMedicines(single ? [single, ...rest] : fullPool)
       } else {
