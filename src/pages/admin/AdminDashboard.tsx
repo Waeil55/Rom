@@ -142,7 +142,7 @@ export function AdminDashboard() {
       {loading && <p className="text-slate-400">Loading…</p>}
 
       {!loading && tab === 'users' && (
-        <div className="overflow-x-auto rounded-[28px] border border-orange-100 dark:border-white/10">
+        <div className="overflow-x-auto glass-card">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500 dark:bg-white/5">
               <tr>
@@ -198,7 +198,7 @@ export function AdminDashboard() {
           {audit.map((a) => (
             <div
               key={a.id}
-              className="rounded-lg border border-orange-100 bg-white p-3 text-sm dark:border-white/10 dark:bg-white/5"
+              className="glass-card-sm p-3 text-sm"
             >
               <div className="flex items-center justify-between">
                 <span className="font-medium">{a.action}</span>

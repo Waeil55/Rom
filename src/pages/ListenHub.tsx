@@ -104,7 +104,7 @@ export function ListenHub() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Filter by drug, brand, or class…"
-        className="w-full rounded-full border border-orange-100 px-4 py-2.5 text-sm outline-none focus:border-brand-400 dark:border-white/10 dark:bg-white/5"
+        className="w-full glass-input px-4 py-2.5 text-sm outline-none"
       />
 
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">

@@ -50,7 +50,7 @@ export function Flashcards() {
 
       <button
         onClick={() => setFlipped((f) => !f)}
-        className="flex min-h-[220px] w-full items-center justify-center rounded-[28px] border border-orange-100 bg-white p-8 text-center shadow-sm dark:border-white/10 dark:bg-white/5"
+        className="flex min-h-[220px] w-full items-center justify-center glass-card p-8 text-center"
       >
         <p className="text-lg font-medium">{flipped ? card.back : card.front}</p>
       </button>

@@ -42,7 +42,7 @@ export function Settings() {
 
       <section className="space-y-3">
         <h2 className="font-semibold">Account</h2>
-        <div className="rounded-[28px] border border-orange-100 p-4 text-sm dark:border-white/10">
+        <div className="glass-card-sm p-4 text-sm">
           <p>{user ? user.email : 'Not signed in'}</p>
           {profile && <p className="text-slate-500">Role: {profile.role}</p>}
           <p className="text-slate-500">Daily goal: {dailyGoalMinutes} min</p>
@@ -97,7 +97,7 @@ export function Settings() {
 
       <section className="space-y-3">
         <h2 className="font-semibold">Accessibility</h2>
-        <label className="flex items-center justify-between rounded-[28px] border border-orange-100 p-4 dark:border-white/10">
+        <label className="flex items-center justify-between glass-card-sm p-4">
           <span className="text-sm">Reduced motion</span>
           <input
             type="checkbox"
@@ -110,7 +110,7 @@ export function Settings() {
 
       <section className="space-y-3">
         <h2 className="font-semibold">Audio</h2>
-        <div className="rounded-[28px] border border-orange-100 p-4 dark:border-white/10">
+        <div className="glass-card-sm p-4">
           <label className="text-sm text-slate-500">Default playback speed: {audioSpeed.toFixed(2)}x</label>
           <input
             type="range"

@@ -78,7 +78,7 @@ export function Medicines() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="e.g. metformin, Lipitor, sertraline"
-          className="flex-1 rounded-full border border-orange-100 px-4 py-2.5 text-sm outline-none focus:border-brand-400 dark:border-white/10 dark:bg-white/5"
+          className="flex-1 glass-input px-4 py-2.5 text-sm outline-none"
         />
         <button className="rounded-full bg-gradient-to-r from-brand-400 to-brand-700 shadow-lg shadow-brand-300/30 px-5 py-2.5 text-sm font-semibold text-white hover:brightness-105 active:scale-95 transition-all">
           Search
@@ -97,7 +97,7 @@ export function Medicines() {
           return (
             <div
               key={m.id}
-              className="relative rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5"
+              className="relative glass-card p-4"
             >
               <button
                 onClick={() => toggleBookmark(m.id)}

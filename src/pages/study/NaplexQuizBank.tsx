@@ -111,7 +111,7 @@ export function NaplexQuizBank() {
         </span>
       </div>
 
-      <div className="rounded-[28px] border border-orange-100 bg-white p-6 dark:border-white/10 dark:bg-white/5">
+      <div className="glass-card p-6">
         <p className="mb-4 text-lg font-medium">{q.question}</p>
         <div className="space-y-2">
           {q.options.map((option) => {

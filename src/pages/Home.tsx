@@ -108,7 +108,7 @@ export function Home() {
               <Link
                 key={r.medicineId}
                 to={`/medicines/${r.medicineId}`}
-                className="min-w-[180px] shrink-0 rounded-[28px] border border-orange-100 bg-white p-4 hover:border-brand-300 dark:border-white/10 dark:bg-white/5"
+                className="min-w-[180px] shrink-0 glass-card p-4 transition-transform hover:scale-[1.02]"
               >
                 <p className="font-semibold">{r.brandName}</p>
                 <p className="text-sm text-slate-500">{r.genericName}</p>

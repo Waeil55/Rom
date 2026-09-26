@@ -67,7 +67,7 @@ export function DiseaseDetail() {
         {SECTIONS.map((section) => (
           <section
             key={section.key}
-            className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5"
+            className="glass-card p-4"
           >
             <div className="mb-2 flex items-center justify-between">
               <h2 className="font-semibold">{section.label}</h2>

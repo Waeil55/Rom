@@ -27,12 +27,12 @@ export function Counseling() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search by drug or brand name…"
-        className="w-full rounded-full border border-orange-100 px-4 py-2.5 text-sm outline-none focus:border-brand-400 dark:border-white/10 dark:bg-white/5"
+        className="w-full glass-input px-4 py-2.5 text-sm outline-none"
       />
 
       <div className="space-y-3">
         {filtered.map((m) => (
-          <div key={m.id} className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+          <div key={m.id} className="glass-card p-4">
             <div className="mb-2 flex items-center justify-between gap-2">
               <Link to={`/medicines/local-${m.id}`} className="min-w-0">
                 <p className="font-semibold">

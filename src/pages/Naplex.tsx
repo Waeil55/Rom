@@ -90,12 +90,12 @@ export function Naplex() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Filter by drug, brand, or class…"
-        className="w-full rounded-full border border-orange-100 px-4 py-2.5 text-sm outline-none focus:border-brand-400 dark:border-white/10 dark:bg-white/5"
+        className="w-full glass-input px-4 py-2.5 text-sm outline-none"
       />
 
       <div className="space-y-6">
         {byClass.map(([drugClass, meds]) => (
-          <section key={drugClass} className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+          <section key={drugClass} className="glass-card p-4">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="font-bold">{drugClass}</h2>
               <span className="text-xs text-slate-400">{meds.length} drugs</span>

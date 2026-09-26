@@ -14,9 +14,9 @@ export function TopBar() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-slate-200 bg-white/90 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
+    <header className="glass-panel sticky top-0 z-30 flex items-center gap-3 px-4 py-3">
       <form onSubmit={onSearch} className="flex-1 max-w-xl">
-        <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800 dark:bg-slate-900">
+        <div className="glass-input flex items-center gap-2 px-3 py-2">
           <MagnifyingGlassIcon className="h-4 w-4 text-slate-400" />
           <input
             value={query}
@@ -36,7 +36,7 @@ export function TopBar() {
             </Link>
             <button
               onClick={() => signOut()}
-              className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900"
+              className="glass-card-sm px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-white/5"
             >
               Sign out
             </button>

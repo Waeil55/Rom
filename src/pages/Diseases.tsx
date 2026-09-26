@@ -49,7 +49,7 @@ export function Diseases() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search by disease, alias, or tag…"
-        className="w-full rounded-full border border-orange-100 px-4 py-2.5 text-sm outline-none focus:border-brand-400 dark:border-white/10 dark:bg-white/5"
+        className="w-full glass-input px-4 py-2.5 text-sm outline-none"
       />
 
       <div className="flex flex-wrap gap-3">
@@ -82,7 +82,7 @@ export function Diseases() {
           <Link
             key={d.id}
             to={`/diseases/${d.id}`}
-            className="rounded-[28px] border border-orange-100 bg-white p-4 hover:border-brand-300 dark:border-white/10 dark:bg-white/5"
+            className="glass-card p-4 transition-transform hover:scale-[1.02]"
           >
             <p className="font-semibold">{d.name}</p>
             <p className="text-sm text-slate-500">{d.system}</p>
@@ -110,7 +110,7 @@ export function Diseases() {
             return (
               <div
                 key={s.id}
-                className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5"
+                className="glass-card p-4"
               >
                 <button
                   onClick={() => setOpenSymptom(open ? null : s.id)}

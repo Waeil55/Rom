@@ -170,20 +170,20 @@ export function AddMedicine() {
                 list="existing-classes"
                 value={draft[key]}
                 onChange={(e) => setField(key, e.target.value)}
-                className="w-full rounded-xl border border-orange-100 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5"
+                className="w-full glass-input rounded-xl px-3 py-2 text-sm"
               />
             ) : multiline ? (
               <textarea
                 value={draft[key]}
                 onChange={(e) => setField(key, e.target.value)}
                 rows={2}
-                className="w-full rounded-xl border border-orange-100 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5"
+                className="w-full glass-input rounded-xl px-3 py-2 text-sm"
               />
             ) : (
               <input
                 value={draft[key]}
                 onChange={(e) => setField(key, e.target.value)}
-                className="w-full rounded-xl border border-orange-100 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5"
+                className="w-full glass-input rounded-xl px-3 py-2 text-sm"
               />
             )}
           </div>
@@ -210,7 +210,7 @@ export function AddMedicine() {
             {existing.map((m) => (
               <div
                 key={m.id}
-                className="flex items-center justify-between rounded-2xl border border-orange-100 bg-white p-3 dark:border-white/10 dark:bg-white/5"
+                className="flex items-center justify-between glass-card-sm p-3"
               >
                 <div>
                   <p className="font-medium">

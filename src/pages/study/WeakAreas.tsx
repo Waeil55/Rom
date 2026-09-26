@@ -24,7 +24,7 @@ export function WeakAreas() {
           {weak.map((w) => (
             <div
               key={w.medicineId}
-              className="flex items-center justify-between rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5"
+              className="flex items-center justify-between glass-card p-4"
             >
               <div>
                 <p className="font-medium">Medicine ID: {w.medicineId}</p>
