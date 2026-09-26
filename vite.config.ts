@@ -14,9 +14,10 @@ export default defineConfig({
         name: 'PharmaLearn — Pharmacy Learning Platform',
         short_name: 'PharmaLearn',
         description: 'Enterprise pharmacy learning platform with AI-narrated lessons, medicine reference, and adaptive quizzing.',
-        theme_color: '#0f172a',
-        background_color: '#0f172a',
+        theme_color: '#FAF7F2',
+        background_color: '#FAF7F2',
         display: 'standalone',
+        orientation: 'portrait-primary',
         start_url: '/',
         icons: [
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },

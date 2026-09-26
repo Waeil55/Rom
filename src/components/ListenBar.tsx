@@ -31,8 +31,8 @@ export function ListenBar() {
   if (!isOpen) return null
 
   return (
-    <div className="fixed bottom-16 md:bottom-4 inset-x-0 z-50 flex justify-center px-3">
-      <div className="w-full max-w-lg rounded-[28px] border border-orange-100 bg-white/95 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5/95">
+    <div className="fixed bottom-[calc(4rem+env(safe-area-inset-bottom))] md:bottom-4 inset-x-0 z-50 flex justify-center px-3">
+      <div className="w-full max-w-lg rounded-[28px] border border-orange-100 bg-white/95 shadow-xl backdrop-blur dark:border-white/10 dark:bg-cream-900/90">
         <div className="flex items-center gap-3 px-4 py-3">
           <button
             onClick={() => setExpanded((v) => !v)}
