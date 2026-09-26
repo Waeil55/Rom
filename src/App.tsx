@@ -20,6 +20,9 @@ import { Signup } from './pages/auth/Signup'
 import { ResetPassword } from './pages/auth/ResetPassword'
 import { NotFound } from './pages/NotFound'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
+import { Naplex } from './pages/Naplex'
+import { ListenHub } from './pages/ListenHub'
+import { Counseling } from './pages/Counseling'
 
 function useThemeEffect() {
   const { theme, textSize, reducedMotion } = useAppStore()
@@ -66,6 +69,9 @@ export default function App() {
             <Route path="/study/quiz" element={<Quiz />} />
             <Route path="/study/matching" element={<Matching />} />
             <Route path="/study/weak-areas" element={<WeakAreas />} />
+            <Route path="/naplex" element={<Naplex />} />
+            <Route path="/listen-hub" element={<ListenHub />} />
+            <Route path="/counseling" element={<Counseling />} />
             <Route path="/settings" element={<Settings />} />
             <Route element={<AdminRoute />}>
               <Route path="/admin" element={<AdminDashboard />} />

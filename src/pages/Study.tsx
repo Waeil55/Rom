@@ -8,7 +8,16 @@ import {
   BoltIcon,
   ExclamationTriangleIcon,
   SparklesIcon,
+  AcademicCapIcon,
+  SpeakerWaveIcon,
+  ChatBubbleLeftRightIcon,
 } from '@heroicons/react/24/outline'
+
+const SECTIONS = [
+  { to: '/naplex', label: 'NAPLEX 2026', icon: AcademicCapIcon, desc: 'Full board-prep hub, organized by drug class' },
+  { to: '/listen-hub', label: 'Listen Hub', icon: SpeakerWaveIcon, desc: 'Play one, many, or all 120 medications' },
+  { to: '/counseling', label: 'Counseling Points', icon: ChatBubbleLeftRightIcon, desc: 'Every patient counseling point, searchable' },
+]
 
 const MODES = [
   { to: '/study/flashcards', label: 'Flashcards', icon: RectangleStackIcon, desc: 'Classic spaced review cards' },
@@ -29,6 +38,23 @@ export function Study() {
         <h1 className="text-2xl font-bold">Study</h1>
         <p className="text-slate-500">Pick a mode. Every card here works — no placeholders.</p>
       </div>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        {SECTIONS.map((s) => (
+          <Link
+            key={s.label}
+            to={s.to}
+            className="flex items-start gap-3 rounded-[28px] bg-gradient-to-br from-brand-50 to-white p-4 border border-brand-200 hover:border-brand-400 dark:border-brand-800 dark:from-white/5 dark:to-white/5"
+          >
+            <s.icon className="h-6 w-6 shrink-0 text-brand-600 dark:text-brand-400" />
+            <div>
+              <p className="font-semibold">{s.label}</p>
+              <p className="text-sm text-slate-500">{s.desc}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {MODES.map((m) => (
           <Link
