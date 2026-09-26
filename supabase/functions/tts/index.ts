@@ -5,6 +5,8 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
+const RATE_LIMIT_MAX_REQUESTS = 30
+const RATE_LIMIT_WINDOW_MINUTES = 60
 
 const STYLE_PROMPTS: Record<string, string> = {
   'read-exactly': 'Read the following pharmacy content aloud exactly as written, clearly and at a measured pace.',
@@ -55,6 +57,29 @@ Deno.serve(async (req) => {
       })
     }
 
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MINUTES * 60 * 1000).toISOString()
+    const { count: recentCount, error: usageError } = await supabaseClient
+      .from('tts_usage')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', userData.user.id)
+      .gte('created_at', windowStart)
+
+    if (usageError) {
+      return new Response(JSON.stringify({ error: 'Rate limit check failed', detail: usageError.message }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    if ((recentCount ?? 0) >= RATE_LIMIT_MAX_REQUESTS) {
+      return new Response(
+        JSON.stringify({
+          error: `Rate limit reached: max ${RATE_LIMIT_MAX_REQUESTS} narrations per ${RATE_LIMIT_WINDOW_MINUTES} minutes. Try again shortly.`,
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
     const instruction = STYLE_PROMPTS[style] ?? STYLE_PROMPTS['explain-simply']
     const apiKey = Deno.env.get('OPENAI_API_KEY')
     if (!apiKey) {
@@ -100,6 +125,8 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
+
+    await supabaseClient.from('tts_usage').insert({ user_id: userData.user.id })
 
     return new Response(JSON.stringify({ audioBase64: audioData, format: 'mp3', transcript }), {
       status: 200,

@@ -19,13 +19,24 @@ interface AuditRow {
   created_at: string
 }
 
-type Tab = 'users' | 'audit'
+interface ErrorRow {
+  id: string
+  user_id: string | null
+  message: string
+  stack: string | null
+  route: string | null
+  user_agent: string | null
+  created_at: string
+}
+
+type Tab = 'users' | 'audit' | 'errors'
 
 export function AdminDashboard() {
   const { user } = useAuth()
   const [tab, setTab] = useState<Tab>('users')
   const [profiles, setProfiles] = useState<AdminProfileRow[]>([])
   const [audit, setAudit] = useState<AuditRow[]>([])
+  const [errors, setErrors] = useState<ErrorRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [busyId, setBusyId] = useState<string | null>(null)
@@ -51,10 +62,21 @@ export function AdminDashboard() {
     else setAudit(data as AuditRow[])
   }, [])
 
+  const loadErrors = useCallback(async () => {
+    if (!supabase) return
+    const { data, error } = await supabase
+      .from('client_error_log')
+      .select('id, user_id, message, stack, route, user_agent, created_at')
+      .order('created_at', { ascending: false })
+      .limit(50)
+    if (error) setError(error.message)
+    else setErrors(data as ErrorRow[])
+  }, [])
+
   useEffect(() => {
     setLoading(true)
-    Promise.all([loadUsers(), loadAudit()]).finally(() => setLoading(false))
-  }, [loadUsers, loadAudit])
+    Promise.all([loadUsers(), loadAudit(), loadErrors()]).finally(() => setLoading(false))
+  }, [loadUsers, loadAudit, loadErrors])
 
   async function toggleRole(row: AdminProfileRow) {
     if (!supabase || !user) return
@@ -89,7 +111,7 @@ export function AdminDashboard() {
       </div>
 
       <div className="flex gap-2 border-b border-orange-100 dark:border-white/10">
-        {(['users', 'audit'] as Tab[]).map((t) => (
+        {(['users', 'audit', 'errors'] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -99,7 +121,7 @@ export function AdminDashboard() {
                 : 'border-transparent text-slate-500'
             }`}
           >
-            {t === 'users' ? 'Users' : 'Audit log'}
+            {t === 'users' ? 'Users' : t === 'audit' ? 'Audit log' : `Errors${errors.length ? ` (${errors.length})` : ''}`}
           </button>
         ))}
       </div>
@@ -176,6 +198,29 @@ export function AdminDashboard() {
             </div>
           ))}
           {audit.length === 0 && <p className="text-slate-400">No administrative actions logged yet.</p>}
+        </div>
+      )}
+
+      {!loading && tab === 'errors' && (
+        <div className="space-y-2">
+          {errors.map((e) => (
+            <div
+              key={e.id}
+              className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm dark:border-red-900/40 dark:bg-red-900/10"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-red-700 dark:text-red-400">{e.message}</span>
+                <span className="text-xs text-slate-400">{new Date(e.created_at).toLocaleString()}</span>
+              </div>
+              <p className="mt-1 text-xs text-slate-500">
+                {e.route ?? 'unknown route'} · {e.user_id ? `user ${e.user_id.slice(0, 8)}` : 'anonymous'}
+              </p>
+              {e.stack && (
+                <pre className="mt-1 max-h-32 overflow-auto whitespace-pre-wrap text-xs text-slate-400">{e.stack}</pre>
+              )}
+            </div>
+          ))}
+          {errors.length === 0 && <p className="text-slate-400">No client errors reported. Good sign.</p>}
         </div>
       )}
     </div>

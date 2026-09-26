@@ -20,7 +20,17 @@ export async function generateSpeech(text: string, style: TeachingStyle): Promis
     body: { text, style },
   })
 
-  if (error) throw new Error(error.message)
+  if (error) {
+    const context = (error as { context?: Response }).context
+    let message = error.message
+    try {
+      const body = await context?.clone().json()
+      if (body?.error) message = body.error
+    } catch {
+      // fall back to the generic error message
+    }
+    throw new Error(message)
+  }
   if (!data?.audioBase64) throw new Error('No audio returned from server.')
 
   const binary = atob(data.audioBase64)
