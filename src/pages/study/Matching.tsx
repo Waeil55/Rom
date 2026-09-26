@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useStudyPool } from '../../hooks/useStudyPool'
+import { BackButton } from '../../components/BackButton'
 
 function shuffle<T>(arr: T[]): T[] {
   const c = [...arr]
@@ -25,8 +26,20 @@ export function Matching() {
     setSelectedBrand(null)
   }, [pairs])
 
-  if (loading) return <p className="text-slate-400">Loading…</p>
-  if (pairs.length === 0) return <p className="text-slate-400">Not enough data to build a matching set.</p>
+  if (loading)
+    return (
+      <div className="space-y-4">
+        <BackButton to="/study" label="Study" />
+        <p className="text-slate-400">Loading…</p>
+      </div>
+    )
+  if (pairs.length === 0)
+    return (
+      <div className="space-y-4">
+        <BackButton to="/study" label="Study" />
+        <p className="text-slate-400">Not enough data to build a matching set.</p>
+      </div>
+    )
 
   function tryMatch(genericId: string) {
     if (!selectedBrand) return
@@ -44,6 +57,7 @@ export function Matching() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
+      <BackButton to="/study" label="Study" />
       <h1 className="text-xl font-bold">Matching: Brand ↔ Generic</h1>
       {done ? (
         <p className="rounded-[28px] bg-green-50 p-4 text-green-700 dark:bg-green-900/20 dark:text-green-400">

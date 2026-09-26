@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DAY_1_MEDICATIONS } from '../data/medications'
 import { ListenButton } from '../components/ListenButton'
+import { BackButton } from '../components/BackButton'
 
 export function Counseling() {
   const [query, setQuery] = useState('')
@@ -16,6 +17,7 @@ export function Counseling() {
 
   return (
     <div className="space-y-6">
+      <BackButton to="/study" label="Study" />
       <div>
         <h1 className="text-2xl font-black tracking-tight">Patient Counseling Points</h1>
         <p className="text-slate-500">Every key counseling point across all {DAY_1_MEDICATIONS.length} medications, in one searchable place.</p>

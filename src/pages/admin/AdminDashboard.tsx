@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
+import { BackButton } from '../../components/BackButton'
 
 interface AdminProfileRow {
   id: string
@@ -105,6 +106,7 @@ export function AdminDashboard() {
 
   return (
     <div className="space-y-6">
+      <BackButton to="/settings" label="Settings" />
       <div>
         <h1 className="text-2xl font-bold">Admin</h1>
         <p className="text-slate-500">Manage user roles and review administrative activity.</p>

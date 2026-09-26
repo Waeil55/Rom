@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllLocalMedicines } from '../lib/localMeds'
 import { ListenButton } from '../components/ListenButton'
+import { BackButton } from '../components/BackButton'
 
 export function Naplex() {
   const all = useMemo(() => getAllLocalMedicines(), [])
@@ -32,6 +33,7 @@ export function Naplex() {
 
   return (
     <div className="space-y-6">
+      <BackButton to="/study" label="Study" />
       <div>
         <h1 className="text-2xl font-black tracking-tight">NAPLEX 2026 — Day 1 Pharmacopeia</h1>
         <p className="text-slate-500">

@@ -3,6 +3,7 @@ import { getAllLocalMedicines } from '../lib/localMeds'
 import { useListen } from '../components/ListenContext'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import { CheckCircleIcon as CheckCircleOutline } from '@heroicons/react/24/outline'
+import { BackButton } from '../components/BackButton'
 
 export function ListenHub() {
   const all = useMemo(() => getAllLocalMedicines(), [])
@@ -64,6 +65,7 @@ export function ListenHub() {
 
   return (
     <div className={`space-y-6 ${isOpen ? 'pb-24' : ''}`}>
+      <BackButton to="/study" label="Study" />
       <div>
         <h1 className="text-2xl font-black tracking-tight">Listen Hub</h1>
         <p className="text-slate-500">Play one medication, a custom selection, or the entire Day 1 set back to back.</p>

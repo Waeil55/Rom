@@ -8,6 +8,7 @@ import { useListen } from '../components/ListenContext'
 import { ListenButton } from '../components/ListenButton'
 import { BookmarkIcon } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkSolid } from '@heroicons/react/24/solid'
+import { BackButton } from '../components/BackButton'
 
 const SECTIONS: MedicineSection[] = [
   { key: 'mechanism', label: 'Mechanism of action' },
@@ -82,6 +83,8 @@ export function MedicineDetail() {
 
   return (
     <div className="space-y-6">
+      <BackButton to="/medicines" label="Medicines" />
+
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold">{medicine.brandName}</h1>

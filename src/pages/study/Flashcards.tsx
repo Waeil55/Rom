@@ -4,6 +4,7 @@ import { useStudyPool } from '../../hooks/useStudyPool'
 import { buildFlashcards } from '../../lib/studyGenerators'
 import { useAppStore } from '../../store/useAppStore'
 import { ListenButton } from '../../components/ListenButton'
+import { BackButton } from '../../components/BackButton'
 
 export function Flashcards() {
   const [params] = useSearchParams()
@@ -14,8 +15,20 @@ export function Flashcards() {
   const [flipped, setFlipped] = useState(false)
   const { recordAnswer } = useAppStore()
 
-  if (loading) return <p className="text-slate-400">Loading flashcards…</p>
-  if (cards.length === 0) return <p className="text-slate-400">No flashcards available yet.</p>
+  if (loading)
+    return (
+      <div className="space-y-4">
+        <BackButton to="/study" label="Study" />
+        <p className="text-slate-400">Loading flashcards…</p>
+      </div>
+    )
+  if (cards.length === 0)
+    return (
+      <div className="space-y-4">
+        <BackButton to="/study" label="Study" />
+        <p className="text-slate-400">No flashcards available yet.</p>
+      </div>
+    )
 
   const card = cards[index]
 
@@ -27,6 +40,7 @@ export function Flashcards() {
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
+      <BackButton to="/study" label="Study" />
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Flashcards</h1>
         <span className="text-sm text-slate-400">

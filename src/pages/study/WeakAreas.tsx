@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAppStore } from '../../store/useAppStore'
+import { BackButton } from '../../components/BackButton'
 
 export function WeakAreas() {
   const { mastery } = useAppStore()
@@ -9,6 +10,7 @@ export function WeakAreas() {
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
+      <BackButton to="/study" label="Study" />
       <h1 className="text-xl font-bold">Weak-area review</h1>
       {weak.length === 0 ? (
         <div className="rounded-[28px] border border-orange-100 p-6 text-center text-slate-500 dark:border-white/10">

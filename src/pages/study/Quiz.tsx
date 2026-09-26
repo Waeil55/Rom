@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useStudyPool } from '../../hooks/useStudyPool'
 import { buildQuiz } from '../../lib/studyGenerators'
 import { useAppStore } from '../../store/useAppStore'
+import { BackButton } from '../../components/BackButton'
 
 export function Quiz() {
   const [params] = useSearchParams()
@@ -15,13 +16,25 @@ export function Quiz() {
   const [finished, setFinished] = useState(false)
   const { recordAnswer, addStudyMinutes } = useAppStore()
 
-  if (loading) return <p className="text-slate-400">Preparing quiz…</p>
+  if (loading)
+    return (
+      <div className="space-y-4">
+        <BackButton to="/study" label="Study" />
+        <p className="text-slate-400">Preparing quiz…</p>
+      </div>
+    )
   if (questions.length === 0)
-    return <p className="text-slate-400">Not enough medicine data loaded yet to build a quiz.</p>
+    return (
+      <div className="space-y-4">
+        <BackButton to="/study" label="Study" />
+        <p className="text-slate-400">Not enough medicine data loaded yet to build a quiz.</p>
+      </div>
+    )
 
   if (finished) {
     return (
       <div className="mx-auto max-w-md space-y-4 text-center">
+        <BackButton to="/study" label="Study" className="mx-auto" />
         <h1 className="text-2xl font-bold">Quiz complete</h1>
         <p className="text-lg">
           Score: <span className="font-semibold text-brand-600">{score}</span> / {questions.length}
@@ -63,6 +76,7 @@ export function Quiz() {
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
+      <BackButton to="/study" label="Study" />
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Quiz</h1>
         <span className="text-sm text-slate-400">
