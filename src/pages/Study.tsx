@@ -15,62 +15,71 @@ import {
 } from '@heroicons/react/24/outline'
 
 const SECTIONS = [
-  { to: '/naplex', label: 'NAPLEX 2026', icon: AcademicCapIcon, desc: 'Full board-prep hub, organized by drug class' },
-  { to: '/diseases', label: 'Diseases', icon: HeartIcon, desc: '162 conditions across 14 body systems, with flashcards & quiz' },
-  { to: '/listen-hub', label: 'Listen Hub', icon: SpeakerWaveIcon, desc: 'Play one, many, or all 120 medications' },
-  { to: '/counseling', label: 'Counseling Points', icon: ChatBubbleLeftRightIcon, desc: 'Every patient counseling point, searchable' },
+  { to: '/naplex', label: 'NAPLEX 2026', icon: AcademicCapIcon, desc: 'Full board-prep hub', gradient: 'from-brand-300 via-brand-400 to-brand-700' },
+  { to: '/diseases', label: 'Diseases', icon: HeartIcon, desc: '162 conditions, 14 systems', gradient: 'from-rose-300 via-rose-400 to-rose-600' },
+  { to: '/listen-hub', label: 'Listen Hub', icon: SpeakerWaveIcon, desc: 'Play one, many, or all', gradient: 'from-lilac-300 via-lilac-400 to-lilac-500' },
+  { to: '/counseling', label: 'Counseling', icon: ChatBubbleLeftRightIcon, desc: 'Every counseling point', gradient: 'from-sky-300 via-sky-400 to-sky-600' },
 ]
 
 const MODES = [
-  { to: '/study/flashcards', label: 'Flashcards', icon: RectangleStackIcon, desc: 'Classic spaced review cards' },
-  { to: '/study/quiz', label: 'Multiple choice', icon: ListBulletIcon, desc: 'Test recall with 4-option questions' },
-  { to: '/study/quiz?mode=true-false', label: 'True / False', icon: ListBulletIcon, desc: 'Quick fact checks' },
-  { to: '/study/matching', label: 'Matching', icon: ArrowsRightLeftIcon, desc: 'Match brand to generic names' },
-  { to: '/study/quiz?mode=fill-blank', label: 'Fill in the blank', icon: PencilSquareIcon, desc: 'Recall key terms' },
-  { to: '/study/quiz?mode=brand-generic', label: 'Brand ↔ Generic', icon: BeakerIcon, desc: 'Drug naming drills' },
-  { to: '/study/quiz', label: 'Rapid review', icon: BoltIcon, desc: '60-second speed rounds' },
-  { to: '/study/weak-areas', label: 'Weak-area review', icon: ExclamationTriangleIcon, desc: 'Focus on what you miss most' },
-  { to: '/study/quiz', label: 'AI-generated practice', icon: SparklesIcon, desc: 'Fresh questions from current lessons' },
+  { to: '/study/flashcards', label: 'Flashcards', icon: RectangleStackIcon },
+  { to: '/study/quiz', label: 'Multiple choice', icon: ListBulletIcon },
+  { to: '/study/quiz?mode=true-false', label: 'True / False', icon: ListBulletIcon },
+  { to: '/study/matching', label: 'Matching', icon: ArrowsRightLeftIcon },
+  { to: '/study/quiz?mode=fill-blank', label: 'Fill in blank', icon: PencilSquareIcon },
+  { to: '/study/quiz?mode=brand-generic', label: 'Brand ↔ Generic', icon: BeakerIcon },
+  { to: '/study/quiz', label: 'Rapid review', icon: BoltIcon },
+  { to: '/study/weak-areas', label: 'Weak areas', icon: ExclamationTriangleIcon },
+  { to: '/study/naplex-bank', label: '351-Q bank', icon: SparklesIcon },
 ]
 
 export function Study() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold">Study</h1>
+        <h1 className="text-2xl font-black tracking-tight">Study</h1>
         <p className="text-slate-500">Pick a mode. Every card here works — no placeholders.</p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {SECTIONS.map((s) => (
           <Link
             key={s.label}
             to={s.to}
-            className="flex items-start gap-3 rounded-[28px] bg-gradient-to-br from-brand-50 to-white p-4 border border-brand-200 hover:border-brand-400 dark:border-brand-800 dark:from-white/5 dark:to-white/5"
+            className={`relative flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-[28px] bg-gradient-to-br p-4 text-center text-white shadow-lg transition-transform hover:scale-[1.03] active:scale-95 ${s.gradient}`}
           >
-            <s.icon className="h-6 w-6 shrink-0 text-brand-600 dark:text-brand-400" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/25 backdrop-blur-sm">
+              <s.icon className="h-6 w-6" />
+            </div>
             <div>
-              <p className="font-semibold">{s.label}</p>
-              <p className="text-sm text-slate-500">{s.desc}</p>
+              <p className="text-sm font-bold leading-tight">{s.label}</p>
+              <p className="text-[10px] text-white/80">{s.desc}</p>
             </div>
           </Link>
         ))}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {MODES.map((m) => (
-          <Link
-            key={m.label}
-            to={m.to}
-            className="flex items-start gap-3 rounded-[28px] border border-orange-100 bg-white p-4 hover:border-brand-300 dark:border-white/10 dark:bg-white/5"
-          >
-            <m.icon className="h-6 w-6 shrink-0 text-brand-600 dark:text-brand-400" />
-            <div>
-              <p className="font-semibold">{m.label}</p>
-              <p className="text-sm text-slate-500">{m.desc}</p>
-            </div>
-          </Link>
-        ))}
+      <div>
+        <h2 className="mb-3 text-lg font-bold">Study modes</h2>
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+          {MODES.map((m) => (
+            <Link
+              key={m.label}
+              to={m.to}
+              className="flex flex-col items-center gap-2 rounded-[24px] p-3 text-center backdrop-blur-xl transition-transform hover:scale-[1.04] active:scale-95"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,140,66,0.08))',
+                border: '1px solid rgba(255,255,255,0.6)',
+                boxShadow: '0 4px 20px rgba(216,73,40,0.08)',
+              }}
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-200 text-brand-700 dark:from-brand-900/40 dark:to-brand-900/20 dark:text-brand-400">
+                <m.icon className="h-5 w-5" />
+              </div>
+              <p className="text-xs font-semibold leading-tight">{m.label}</p>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   )

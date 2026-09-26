@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useAppStore } from '../store/useAppStore'
 import { useAuth } from '../hooks/useAuth'
 import { FEATURED_QUERIES } from '../lib/openfda'
+import { StatRing } from '../components/StatRing'
 
 export function Home() {
   const { recentlyViewed, minutesStudiedToday, dailyGoalMinutes, mastery } = useAppStore()
@@ -57,29 +58,31 @@ export function Home() {
         </Link>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">Daily goal</p>
-          <div className="mt-2 flex items-end gap-2">
-            <span className="text-2xl font-bold">{minutesStudiedToday}</span>
-            <span className="text-sm text-slate-400">/ {dailyGoalMinutes} min</span>
-          </div>
-          <div className="mt-2 h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800">
-            <div className="h-2 rounded-full bg-brand-500" style={{ width: `${progressPct}%` }} />
-          </div>
-        </div>
-
-        <div className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">Recently viewed</p>
-          <p className="mt-2 text-2xl font-bold">{recentlyViewed.length}</p>
-          <p className="text-sm text-slate-400">medicines this week</p>
-        </div>
-
-        <div className="rounded-[28px] border border-orange-100 bg-white p-4 dark:border-white/10 dark:bg-white/5">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">Weak areas</p>
-          <p className="mt-2 text-2xl font-bold">{weakAreas.length}</p>
-          <p className="text-sm text-slate-400">topics need review</p>
-        </div>
+      <div className="grid grid-cols-3 gap-3">
+        <StatRing
+          label="Goal"
+          value={`${progressPct}%`}
+          sublabel={`${minutesStudiedToday}/${dailyGoalMinutes} min`}
+          percent={progressPct}
+          gradientFrom="#FF9C40"
+          gradientTo="#E85D36"
+        />
+        <StatRing
+          label="Viewed"
+          value={recentlyViewed.length}
+          sublabel="this week"
+          percent={Math.min(100, recentlyViewed.length * 10)}
+          gradientFrom="#AC94DE"
+          gradientTo="#8F6FD1"
+        />
+        <StatRing
+          label="Weak"
+          value={weakAreas.length}
+          sublabel="to review"
+          percent={Math.min(100, weakAreas.length * 20)}
+          gradientFrom="#FDA4AF"
+          gradientTo="#E11D48"
+        />
       </div>
 
       <div className="flex flex-wrap gap-3">
