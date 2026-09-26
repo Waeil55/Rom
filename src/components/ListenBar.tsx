@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   PlayIcon,
   PauseIcon,
@@ -8,6 +8,7 @@ import {
   XMarkIcon,
   ChevronUpIcon,
   ChevronDownIcon,
+  MinusIcon,
 } from '@heroicons/react/24/solid'
 import { useListen } from './ListenContext'
 import { useAppStore } from '../store/useAppStore'
@@ -27,8 +28,77 @@ export function ListenBar() {
     useListen()
   const { audioSpeed, setAudioSpeed, teachingStyle, setTeachingStyle } = useAppStore()
   const [expanded, setExpanded] = useState(false)
+  const [minimized, setMinimized] = useState(false)
+  const [bubblePos, setBubblePos] = useState<{ x: number; y: number } | null>(null)
+  const dragState = useRef<{ startX: number; startY: number; origX: number; origY: number; moved: boolean } | null>(
+    null
+  )
 
   if (!isOpen) return null
+
+  function defaultBubblePos() {
+    if (typeof window === 'undefined') return { x: 16, y: 120 }
+    return { x: window.innerWidth - 76, y: window.innerHeight - 220 }
+  }
+
+  function onDragStart(clientX: number, clientY: number) {
+    const pos = bubblePos ?? defaultBubblePos()
+    dragState.current = { startX: clientX, startY: clientY, origX: pos.x, origY: pos.y, moved: false }
+  }
+
+  function onDragMove(clientX: number, clientY: number) {
+    if (!dragState.current) return
+    const dx = clientX - dragState.current.startX
+    const dy = clientY - dragState.current.startY
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragState.current.moved = true
+    const maxX = window.innerWidth - 60
+    const maxY = window.innerHeight - 60
+    setBubblePos({
+      x: Math.min(Math.max(0, dragState.current.origX + dx), maxX),
+      y: Math.min(Math.max(0, dragState.current.origY + dy), maxY),
+    })
+  }
+
+  function onDragEnd() {
+    const moved = dragState.current?.moved
+    dragState.current = null
+    return moved
+  }
+
+  if (minimized) {
+    const pos = bubblePos ?? defaultBubblePos()
+    return (
+      <div
+        className="fixed z-50 touch-none select-none"
+        style={{ left: pos.x, top: pos.y }}
+        onMouseDown={(e) => onDragStart(e.clientX, e.clientY)}
+        onMouseMove={(e) => {
+          if (dragState.current) onDragMove(e.clientX, e.clientY)
+        }}
+        onMouseUp={() => onDragEnd()}
+        onMouseLeave={() => dragState.current && onDragEnd()}
+        onTouchStart={(e) => onDragStart(e.touches[0].clientX, e.touches[0].clientY)}
+        onTouchMove={(e) => onDragMove(e.touches[0].clientX, e.touches[0].clientY)}
+        onTouchEnd={() => onDragEnd()}
+      >
+        <button
+          onClick={() => {
+            if (!onDragEnd()) setMinimized(false)
+          }}
+          aria-label="Restore listen player"
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-xl shadow-brand-500/40"
+        >
+          {isLoading ? (
+            <span className="h-3 w-3 animate-pulse rounded-full bg-white" />
+          ) : isPlaying ? (
+            <PauseIcon className="h-6 w-6" />
+          ) : (
+            <PlayIcon className="h-6 w-6 translate-x-0.5" />
+          )}
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="fixed bottom-[calc(4rem+env(safe-area-inset-bottom))] md:bottom-4 inset-x-0 z-50 flex justify-center px-3">
@@ -69,6 +139,13 @@ export function ListenBar() {
           </button>
           <button onClick={repeat} aria-label="Repeat" className="p-1.5 text-slate-500">
             <ArrowPathIcon className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => setMinimized(true)}
+            aria-label="Minimize player"
+            className="p-1.5 text-slate-400"
+          >
+            <MinusIcon className="h-5 w-5" />
           </button>
           <button onClick={close} aria-label="Close player" className="p-1.5 text-slate-400">
             <XMarkIcon className="h-5 w-5" />
