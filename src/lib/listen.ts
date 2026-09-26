@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { supabase, supabaseUrl, supabaseAnonKey } from './supabase'
 import type { TeachingStyle } from './types'
 
 export interface ListenResult {
@@ -6,8 +6,13 @@ export interface ListenResult {
   transcript: string
 }
 
-export async function generateSpeech(text: string, style: TeachingStyle): Promise<ListenResult> {
-  if (!supabase) {
+export async function generateSpeech(
+  text: string,
+  style: TeachingStyle,
+  voice: string,
+  speed: number
+): Promise<ListenResult> {
+  if (!supabase || !supabaseUrl || !supabaseAnonKey) {
     throw new Error('Connect Supabase to enable AI Listen (see README setup).')
   }
   const { data: sessionData } = await supabase.auth.getSession()
@@ -16,27 +21,30 @@ export async function generateSpeech(text: string, style: TeachingStyle): Promis
     throw new Error('Sign in to use AI Listen.')
   }
 
-  const { data, error } = await supabase.functions.invoke('tts', {
-    body: { text, style },
+  const res = await fetch(`${supabaseUrl}/functions/v1/tts`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apikey: supabaseAnonKey,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ text, style, voice, speed }),
   })
 
-  if (error) {
-    const context = (error as { context?: Response }).context
-    let message = error.message
+  if (!res.ok) {
+    let message = `Listen request failed (${res.status})`
     try {
-      const body = await context?.clone().json()
+      const body = await res.json()
       if (body?.error) message = body.error
     } catch {
-      // fall back to the generic error message
+      // response wasn't JSON; keep the generic message
     }
     throw new Error(message)
   }
-  if (!data?.audioBase64) throw new Error('No audio returned from server.')
 
-  const binary = atob(data.audioBase64)
-  const bytes = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
-  const blob = new Blob([bytes], { type: `audio/${data.format ?? 'mp3'}` })
+  const transcriptHeader = res.headers.get('X-Transcript')
+  const transcript = transcriptHeader ? decodeURIComponent(transcriptHeader) : text
+  const blob = await res.blob()
   const audioUrl = URL.createObjectURL(blob)
-  return { audioUrl, transcript: data.transcript ?? text }
+  return { audioUrl, transcript }
 }

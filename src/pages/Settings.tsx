@@ -1,11 +1,21 @@
 import { Link } from 'react-router-dom'
 import { useAppStore, type TextSize, type Theme } from '../store/useAppStore'
 import { useAuth } from '../hooks/useAuth'
+import { useListen } from '../components/ListenContext'
 
 const THEMES: { value: Theme; label: string }[] = [
   { value: 'light', label: 'Light' },
   { value: 'dark', label: 'Dark' },
   { value: 'system', label: 'System' },
+]
+
+const VOICES: { value: string; label: string }[] = [
+  { value: 'alloy', label: 'Alloy — neutral' },
+  { value: 'echo', label: 'Echo — warm' },
+  { value: 'fable', label: 'Fable — expressive' },
+  { value: 'onyx', label: 'Onyx — deep' },
+  { value: 'nova', label: 'Nova — bright' },
+  { value: 'shimmer', label: 'Shimmer — soft' },
 ]
 
 const TEXT_SIZES: { value: TextSize; label: string }[] = [
@@ -25,9 +35,12 @@ export function Settings() {
     setReducedMotion,
     audioSpeed,
     setAudioSpeed,
+    voice,
+    setVoice,
     dailyGoalMinutes,
   } = useAppStore()
   const { user, profile, configured } = useAuth()
+  const { play } = useListen()
 
   return (
     <div className="mx-auto max-w-xl space-y-8">
@@ -110,17 +123,46 @@ export function Settings() {
 
       <section className="space-y-3">
         <h2 className="font-semibold">Audio</h2>
-        <div className="glass-card-sm p-4">
-          <label className="text-sm text-slate-500">Default playback speed: {audioSpeed.toFixed(2)}x</label>
-          <input
-            type="range"
-            min={0.5}
-            max={2}
-            step={0.25}
-            value={audioSpeed}
-            onChange={(e) => setAudioSpeed(Number(e.target.value))}
-            className="w-full"
-          />
+        <div className="glass-card-sm space-y-4 p-4">
+          <div>
+            <label className="text-sm text-slate-500">Default playback speed: {audioSpeed.toFixed(2)}x</label>
+            <input
+              type="range"
+              min={0.5}
+              max={2}
+              step={0.25}
+              value={audioSpeed}
+              onChange={(e) => setAudioSpeed(Number(e.target.value))}
+              className="w-full"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm text-slate-500">AI voice</label>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {VOICES.map((v) => (
+                <button
+                  key={v.value}
+                  onClick={() => setVoice(v.value)}
+                  className={`flex items-center justify-between rounded-2xl border px-3 py-2 text-xs font-medium transition-all ${
+                    voice === v.value
+                      ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-900/20 dark:text-brand-300'
+                      : 'border-orange-100 dark:border-white/10'
+                  }`}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() =>
+                play([{ label: `Voice preview — ${voice}`, text: 'Hi, this is a preview of how I sound reading your pharmacy lessons.' }])
+              }
+              className="mt-3 rounded-full bg-gradient-to-r from-brand-400 to-brand-700 px-4 py-1.5 text-xs font-semibold text-white shadow-md shadow-brand-300/30 hover:brightness-105 active:scale-95 transition-all"
+            >
+              Preview this voice
+            </button>
+          </div>
         </div>
       </section>
     </div>

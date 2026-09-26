@@ -33,7 +33,7 @@ export function ListenProvider({ children }: { children: ReactNode }) {
   const [queue, setQueue] = useState<QueueItem[]>([])
   const [index, setIndex] = useState(0)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const { audioSpeed, teachingStyle } = useAppStore()
+  const { audioSpeed, teachingStyle, voice } = useAppStore()
 
   const speak = useCallback(
     async (items: QueueItem[], i: number, style: TeachingStyle) => {
@@ -42,7 +42,7 @@ export function ListenProvider({ children }: { children: ReactNode }) {
       setIsLoading(true)
       setError(null)
       try {
-        const { audioUrl } = await generateSpeech(item.text, style)
+        const { audioUrl } = await generateSpeech(item.text, style, voice, 1)
         if (audioRef.current) {
           audioRef.current.pause()
         }
@@ -59,7 +59,7 @@ export function ListenProvider({ children }: { children: ReactNode }) {
         setIsLoading(false)
       }
     },
-    [audioSpeed]
+    [audioSpeed, voice]
   )
 
   const play = useCallback(

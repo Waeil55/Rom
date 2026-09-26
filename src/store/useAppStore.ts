@@ -23,6 +23,7 @@ interface AppState {
   textSize: TextSize
   reducedMotion: boolean
   audioSpeed: number
+  voice: string
   teachingStyle: TeachingStyle
   dailyGoalMinutes: number
   minutesStudiedToday: number
@@ -33,6 +34,7 @@ interface AppState {
   setTextSize: (s: TextSize) => void
   setReducedMotion: (v: boolean) => void
   setAudioSpeed: (v: number) => void
+  setVoice: (v: string) => void
   setTeachingStyle: (v: TeachingStyle) => void
   addRecentlyViewed: (m: Omit<RecentView, 'viewedAt'>) => void
   toggleBookmark: (medicineId: string) => void
@@ -47,6 +49,7 @@ export const useAppStore = create<AppState>()(
       textSize: 'md',
       reducedMotion: false,
       audioSpeed: 1,
+      voice: 'alloy',
       teachingStyle: 'explain-simply',
       dailyGoalMinutes: 20,
       minutesStudiedToday: 0,
@@ -57,6 +60,7 @@ export const useAppStore = create<AppState>()(
       setTextSize: (textSize) => set({ textSize }),
       setReducedMotion: (reducedMotion) => set({ reducedMotion }),
       setAudioSpeed: (audioSpeed) => set({ audioSpeed }),
+      setVoice: (voice) => set({ voice }),
       setTeachingStyle: (teachingStyle) => set({ teachingStyle }),
       addRecentlyViewed: (m) => {
         const filtered = get().recentlyViewed.filter((r) => r.medicineId !== m.medicineId)
