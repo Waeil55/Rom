@@ -34,6 +34,7 @@ export function ListenHub() {
   const [dbMeds, setDbMeds] = useState<Medicine[]>([])
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [showStyles, setShowStyles] = useState(false)
   const { play, isOpen, autoAdvance, setAutoAdvance } = useListen()
   const { teachingStyle, setTeachingStyle } = useAppStore()
 
@@ -143,23 +144,30 @@ export function ListenHub() {
       </div>
 
       <div className="glass-card-sm p-4">
-        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">How should it be spoken?</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {STYLE_OPTIONS.map((s) => (
-            <button
-              key={s.value}
-              onClick={() => setTeachingStyle(s.value)}
-              className={`rounded-2xl border px-3 py-2 text-left transition-all ${
-                teachingStyle === s.value
-                  ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20'
-                  : 'border-orange-100 dark:border-white/10'
-              }`}
-            >
-              <p className="text-xs font-bold">{s.label}</p>
-              <p className="text-[10px] text-slate-400">{s.hint}</p>
-            </button>
-          ))}
-        </div>
+        <button onClick={() => setShowStyles((v) => !v)} className="flex w-full items-center justify-between">
+          <span className="text-xs font-bold uppercase tracking-wide text-slate-500">
+            Speaking style: <span className="text-brand-600 dark:text-brand-400">{STYLE_OPTIONS.find((s) => s.value === teachingStyle)?.label}</span>
+          </span>
+          <span className="text-xs text-slate-400">{showStyles ? 'Hide' : 'Change'}</span>
+        </button>
+        {showStyles && (
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {STYLE_OPTIONS.map((s) => (
+              <button
+                key={s.value}
+                onClick={() => setTeachingStyle(s.value)}
+                className={`rounded-2xl border px-3 py-2 text-left transition-all ${
+                  teachingStyle === s.value
+                    ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20'
+                    : 'border-orange-100 dark:border-white/10'
+                }`}
+              >
+                <p className="text-xs font-bold">{s.label}</p>
+                <p className="text-[10px] text-slate-400">{s.hint}</p>
+              </button>
+            ))}
+          </div>
+        )}
         <label className="mt-3 flex items-center gap-2 text-xs text-slate-500">
           <input type="checkbox" checked={autoAdvance} onChange={(e) => setAutoAdvance(e.target.checked)} />
           Auto-play next item continuously (for drive/hands-free listening)

@@ -57,34 +57,17 @@ export function Naplex() {
           to="/study/naplex-bank"
           className="rounded-full bg-gradient-to-r from-brand-400 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-300/30 hover:brightness-105 active:scale-95 transition-all"
         >
-          NAPLEX question bank
-        </Link>
-        <Link
-          to="/study/quiz"
-          className="rounded-full border border-orange-100 px-4 py-2 text-sm font-semibold hover:bg-slate-100 dark:border-white/10 dark:hover:bg-slate-900"
-        >
-          Full board quiz
-        </Link>
-        <Link
-          to="/study/flashcards"
-          className="rounded-full border border-orange-100 px-4 py-2 text-sm font-semibold hover:bg-slate-100 dark:border-white/10 dark:hover:bg-slate-900"
-        >
-          Flashcards
-        </Link>
-        <Link
-          to="/study/matching"
-          className="rounded-full border border-orange-100 px-4 py-2 text-sm font-semibold hover:bg-slate-100 dark:border-white/10 dark:hover:bg-slate-900"
-        >
-          Brand ↔ Generic drill
-        </Link>
-        <Link
-          to="/listen-hub"
-          className="rounded-full border border-orange-100 px-4 py-2 text-sm font-semibold hover:bg-slate-100 dark:border-white/10 dark:hover:bg-slate-900"
-        >
-          Listen to all
+          Question bank (351)
         </Link>
         <ListenButton label="All board pearls" text={pearlsScript} size="md" />
       </div>
+      <p className="text-xs text-slate-400">
+        Looking for flashcards, matching, or a full quiz on this drug list? Find them on the{' '}
+        <Link to="/study" className="font-medium text-brand-600 dark:text-brand-400">
+          Study hub
+        </Link>
+        .
+      </p>
 
       <input
         value={query}
