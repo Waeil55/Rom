@@ -115,7 +115,11 @@ export function ListenHub() {
               key={m.id}
               className="flex items-center gap-2 rounded-2xl border border-orange-100 bg-white p-3 dark:border-white/10 dark:bg-white/5"
             >
-              <button onClick={() => toggle(m.id)} className="shrink-0 text-brand-600">
+              <button
+                onClick={() => toggle(m.id)}
+                aria-label={isSelected ? `Deselect ${m.brandName}` : `Select ${m.brandName}`}
+                className="shrink-0 text-brand-600"
+              >
                 {isSelected ? <CheckCircleIcon className="h-6 w-6" /> : <CheckCircleOutline className="h-6 w-6" />}
               </button>
               <button onClick={() => toggle(m.id)} className="min-w-0 flex-1 text-left">
@@ -124,6 +128,7 @@ export function ListenHub() {
               </button>
               <button
                 onClick={() => playOne(m.id)}
+                aria-label={`Play ${m.brandName}`}
                 className="shrink-0 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-800 dark:bg-brand-500/10 dark:text-brand-300"
               >
                 ▶

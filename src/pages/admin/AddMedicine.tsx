@@ -218,7 +218,11 @@ export function AddMedicine() {
                   </p>
                   <p className="text-xs text-slate-400">{m.drugClass}</p>
                 </div>
-                <button onClick={() => handleDelete(m.id)} className="text-red-500 hover:text-red-600">
+                <button
+                  onClick={() => handleDelete(m.id)}
+                  aria-label={`Remove ${m.brandName}`}
+                  className="text-red-500 hover:text-red-600"
+                >
                   <TrashIcon className="h-5 w-5" />
                 </button>
               </div>

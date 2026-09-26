@@ -36,6 +36,7 @@ export function ListenBar() {
         <div className="flex items-center gap-3 px-4 py-3">
           <button
             onClick={() => setExpanded((v) => !v)}
+            aria-label={expanded ? 'Collapse listen controls' : 'Expand listen controls'}
             className="flex flex-1 items-center gap-2 text-left"
           >
             {expanded ? <ChevronDownIcon className="h-4 w-4 text-slate-400" /> : <ChevronUpIcon className="h-4 w-4 text-slate-400" />}
@@ -47,23 +48,29 @@ export function ListenBar() {
             </div>
           </button>
 
-          <button onClick={previous} disabled={!queue.length} className="p-1.5 text-slate-500 disabled:opacity-30">
+          <button
+            onClick={previous}
+            disabled={!queue.length}
+            aria-label="Previous"
+            className="p-1.5 text-slate-500 disabled:opacity-30"
+          >
             <BackwardIcon className="h-5 w-5" />
           </button>
           <button
             onClick={togglePlayPause}
             disabled={isLoading}
+            aria-label={isPlaying ? 'Pause' : 'Play'}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-lg shadow-brand-300/40 disabled:opacity-50"
           >
             {isPlaying ? <PauseIcon className="h-5 w-5" /> : <PlayIcon className="h-5 w-5 translate-x-0.5" />}
           </button>
-          <button onClick={next} className="p-1.5 text-slate-500">
+          <button onClick={next} aria-label="Next" className="p-1.5 text-slate-500">
             <ForwardIcon className="h-5 w-5" />
           </button>
-          <button onClick={repeat} className="p-1.5 text-slate-500">
+          <button onClick={repeat} aria-label="Repeat" className="p-1.5 text-slate-500">
             <ArrowPathIcon className="h-5 w-5" />
           </button>
-          <button onClick={close} className="p-1.5 text-slate-400">
+          <button onClick={close} aria-label="Close player" className="p-1.5 text-slate-400">
             <XMarkIcon className="h-5 w-5" />
           </button>
         </div>
