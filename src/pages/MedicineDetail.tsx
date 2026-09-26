@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getMedicineById } from '../lib/openfda'
-import { getLocalMedicineById, enrichWithOpenFda, isLocalId } from '../lib/localMeds'
+import { getLocalMedicineById, getRelatedLocalMedicines, enrichWithOpenFda, isLocalId } from '../lib/localMeds'
 import type { Medicine, MedicineSection } from '../lib/types'
 import { useAppStore } from '../store/useAppStore'
 import { useListen } from '../components/ListenContext'
@@ -78,6 +78,7 @@ export function MedicineDetail() {
   }
 
   const bookmarked = bookmarks.includes(medicine.id)
+  const related = isLocalId(medicine.id) ? getRelatedLocalMedicines(medicine) : []
 
   return (
     <div className="space-y-6">
@@ -85,7 +86,12 @@ export function MedicineDetail() {
         <div>
           <h1 className="text-2xl font-bold">{medicine.brandName}</h1>
           <p className="text-slate-500">
-            {medicine.genericName} · <span className="italic">{medicine.drugClass}</span>
+            {medicine.genericName}
+            {medicine.pronunciation && (
+              <span className="text-slate-400"> ({medicine.pronunciation})</span>
+            )}
+            {' · '}
+            <span className="italic">{medicine.drugClass}</span>
           </p>
         </div>
         <button onClick={() => toggleBookmark(medicine.id)} className="text-brand-600" aria-label="Bookmark">
@@ -138,6 +144,24 @@ export function MedicineDetail() {
           </section>
         ))}
       </div>
+
+      {related.length > 0 && (
+        <section>
+          <h2 className="mb-3 text-lg font-semibold">Related medicines</h2>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {related.map((m) => (
+              <Link
+                key={m.id}
+                to={`/medicines/${m.id}`}
+                className="min-w-[180px] shrink-0 rounded-2xl border border-orange-100 bg-white p-3 hover:border-brand-300 dark:border-white/10 dark:bg-white/5"
+              >
+                <p className="font-semibold">{m.brandName}</p>
+                <p className="text-sm text-slate-500">{m.genericName}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <p className="rounded-[28px] border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
         For study purposes only. Confirm dosing, contraindications, and clinical decisions against current

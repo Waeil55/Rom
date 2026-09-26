@@ -1,5 +1,6 @@
 import { DAY_1_MEDICATIONS, type LocalMedication } from '../data/medications'
 import { CLINICAL_DETAILS } from '../data/clinicalDetails'
+import { PRONUNCIATIONS } from '../data/pronunciations'
 import { searchMedicines } from './openfda'
 import type { Medicine } from './types'
 
@@ -11,6 +12,7 @@ export function localToMedicine(local: LocalMedication): Medicine {
     id: `local-${local.id}`,
     brandName: local.brandName,
     genericName: local.genericName,
+    pronunciation: PRONUNCIATIONS[local.id] ?? null,
     drugClass: local.drugClass,
     manufacturer: 'Multiple manufacturers',
     mechanism: clinical?.mechanism ?? NOT_CURATED,
@@ -51,6 +53,14 @@ export function getLocalMedicineById(id: string): Medicine | null {
   const slug = id.replace(/^local-/, '')
   const found = DAY_1_MEDICATIONS.find((m) => m.id === slug)
   return found ? localToMedicine(found) : null
+}
+
+/** Other curated medications sharing the same drug class, for a "related medicines" section. */
+export function getRelatedLocalMedicines(medicine: Medicine, limit = 6): Medicine[] {
+  const slug = medicine.id.replace(/^local-/, '')
+  return DAY_1_MEDICATIONS.filter((m) => m.id !== slug && m.drugClass === medicine.drugClass)
+    .slice(0, limit)
+    .map(localToMedicine)
 }
 
 /**

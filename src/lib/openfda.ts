@@ -47,6 +47,7 @@ function normalize(result: OpenFdaResult): Medicine {
     id: result.id,
     brandName: titleCase(brand),
     genericName: titleCase(generic),
+    pronunciation: null,
     drugClass: result.openfda?.pharm_class_epc?.[0]?.replace(/\[.*?\]/g, '').trim() ?? 'Uncategorized',
     manufacturer: result.openfda?.manufacturer_name?.[0] ?? 'Unknown manufacturer',
     mechanism: firstSentences(result.mechanism_of_action?.[0] ?? result.clinical_pharmacology?.[0], 4),

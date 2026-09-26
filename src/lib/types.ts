@@ -2,6 +2,7 @@ export interface Medicine {
   id: string
   brandName: string
   genericName: string
+  pronunciation: string | null
   drugClass: string
   manufacturer: string
   mechanism: string
