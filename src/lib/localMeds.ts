@@ -1,24 +1,26 @@
 import { DAY_1_MEDICATIONS, type LocalMedication } from '../data/medications'
+import { CLINICAL_DETAILS } from '../data/clinicalDetails'
 import { searchMedicines } from './openfda'
 import type { Medicine } from './types'
 
 const NOT_CURATED = 'Not part of the curated Day 1 dataset yet — refer to a full drug reference or the FDA label for this section.'
 
 export function localToMedicine(local: LocalMedication): Medicine {
+  const clinical = CLINICAL_DETAILS[local.id]
   return {
     id: `local-${local.id}`,
     brandName: local.brandName,
     genericName: local.genericName,
     drugClass: local.drugClass,
     manufacturer: 'Multiple manufacturers',
-    mechanism: NOT_CURATED,
+    mechanism: clinical?.mechanism ?? NOT_CURATED,
     indications: local.indications,
-    dosage: NOT_CURATED,
-    contraindications: NOT_CURATED,
-    warnings: NOT_CURATED,
+    dosage: clinical?.dosage ?? NOT_CURATED,
+    contraindications: clinical?.contraindications ?? NOT_CURATED,
+    warnings: clinical?.warnings ?? NOT_CURATED,
     sideEffects: local.sideEffects,
-    interactions: NOT_CURATED,
-    monitoring: NOT_CURATED,
+    interactions: clinical?.interactions ?? NOT_CURATED,
+    monitoring: clinical?.monitoring ?? NOT_CURATED,
     counseling: local.counseling.join(' '),
     pearls: `${local.genericName} (${local.brandName}) is classified as ${local.drugClass}.`,
   }
@@ -51,25 +53,36 @@ export function getLocalMedicineById(id: string): Medicine | null {
   return found ? localToMedicine(found) : null
 }
 
-/** Merge a curated local entry's accuracy-critical fields onto a live OpenFDA record, when both exist for the same drug. */
+/**
+ * Fills any field still marked NOT_CURATED with live OpenFDA label text, as a fallback only.
+ * Curated content (from clinicalDetails.ts) always wins when present — this never overwrites it.
+ */
 export async function enrichWithOpenFda(local: Medicine): Promise<Medicine> {
+  const stillMissing = (v: string) => v === NOT_CURATED
+  const hasGap =
+    stillMissing(local.mechanism) ||
+    stillMissing(local.dosage) ||
+    stillMissing(local.contraindications) ||
+    stillMissing(local.warnings) ||
+    stillMissing(local.interactions) ||
+    stillMissing(local.monitoring)
+  if (!hasGap) return local
+
   try {
     const generic = local.genericName.split('/')[0]
     const results = await searchMedicines(generic, 1).catch(() => [])
     const fda = results[0] ?? null
     if (!fda) return local
+    const fromFda = (local: string, fda: string) =>
+      stillMissing(local) && fda !== 'Not documented in the available label data.' ? fda : local
     return {
       ...local,
-      mechanism: fda.mechanism !== 'Not documented in the available label data.' ? fda.mechanism : local.mechanism,
-      dosage: fda.dosage !== 'Not documented in the available label data.' ? fda.dosage : local.dosage,
-      contraindications:
-        fda.contraindications !== 'Not documented in the available label data.'
-          ? fda.contraindications
-          : local.contraindications,
-      warnings: fda.warnings !== 'Not documented in the available label data.' ? fda.warnings : local.warnings,
-      interactions:
-        fda.interactions !== 'Not documented in the available label data.' ? fda.interactions : local.interactions,
-      monitoring: fda.monitoring !== 'Not documented in the available label data.' ? fda.monitoring : local.monitoring,
+      mechanism: fromFda(local.mechanism, fda.mechanism),
+      dosage: fromFda(local.dosage, fda.dosage),
+      contraindications: fromFda(local.contraindications, fda.contraindications),
+      warnings: fromFda(local.warnings, fda.warnings),
+      interactions: fromFda(local.interactions, fda.interactions),
+      monitoring: fromFda(local.monitoring, fda.monitoring),
     }
   } catch {
     return local

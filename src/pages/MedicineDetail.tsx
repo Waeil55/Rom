@@ -138,6 +138,11 @@ export function MedicineDetail() {
           </section>
         ))}
       </div>
+
+      <p className="rounded-[28px] border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
+        For study purposes only. Confirm dosing, contraindications, and clinical decisions against current
+        official prescribing information before any real-world use.
+      </p>
     </div>
   )
 }
