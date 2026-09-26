@@ -54,8 +54,14 @@ export function Naplex() {
 
       <div className="flex flex-wrap gap-3">
         <Link
-          to="/study/quiz"
+          to="/study/naplex-bank"
           className="rounded-full bg-gradient-to-r from-brand-400 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-300/30 hover:brightness-105 active:scale-95 transition-all"
+        >
+          NAPLEX question bank
+        </Link>
+        <Link
+          to="/study/quiz"
+          className="rounded-full border border-orange-100 px-4 py-2 text-sm font-semibold hover:bg-slate-100 dark:border-white/10 dark:hover:bg-slate-900"
         >
           Full board quiz
         </Link>

@@ -31,6 +31,9 @@ const DiseaseFlashcards = lazy(() =>
   import('./pages/study/DiseaseFlashcards').then((m) => ({ default: m.DiseaseFlashcards }))
 )
 const DiseaseQuiz = lazy(() => import('./pages/study/DiseaseQuiz').then((m) => ({ default: m.DiseaseQuiz })))
+const NaplexQuizBank = lazy(() =>
+  import('./pages/study/NaplexQuizBank').then((m) => ({ default: m.NaplexQuizBank }))
+)
 
 function RouteFallback() {
   return <div className="flex h-full items-center justify-center py-24 text-slate-400">Loading…</div>
@@ -89,6 +92,7 @@ export default function App() {
               <Route path="/diseases/:id" element={<DiseaseDetail />} />
               <Route path="/study/diseases/flashcards" element={<DiseaseFlashcards />} />
               <Route path="/study/diseases/quiz" element={<DiseaseQuiz />} />
+              <Route path="/study/naplex-bank" element={<NaplexQuizBank />} />
               <Route path="/settings" element={<Settings />} />
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
