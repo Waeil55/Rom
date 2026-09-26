@@ -20,7 +20,7 @@ export function ResetPassword() {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-6">
+    <div className="mx-auto flex min-h-dvh pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] max-w-sm flex-col justify-center px-6">
       <h1 className="mb-1 text-2xl font-bold">Reset password</h1>
       <p className="mb-6 text-slate-500">We'll email you a secure reset link.</p>
 

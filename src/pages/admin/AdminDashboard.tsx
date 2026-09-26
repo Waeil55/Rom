@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
 import { BackButton } from '../../components/BackButton'
+import { Link } from 'react-router-dom'
+import { PlusIcon } from '@heroicons/react/24/outline'
 
 interface AdminProfileRow {
   id: string
@@ -107,9 +109,17 @@ export function AdminDashboard() {
   return (
     <div className="space-y-6">
       <BackButton to="/settings" label="Settings" />
-      <div>
-        <h1 className="text-2xl font-bold">Admin</h1>
-        <p className="text-slate-500">Manage user roles and review administrative activity.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Admin</h1>
+          <p className="text-slate-500">Manage user roles and review administrative activity.</p>
+        </div>
+        <Link
+          to="/admin/add-medicine"
+          className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-brand-400 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-300/30 hover:brightness-105 active:scale-95 transition-all"
+        >
+          <PlusIcon className="h-4 w-4" /> Add
+        </Link>
       </div>
 
       <div className="flex gap-2 border-b border-orange-100 dark:border-white/10">

@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-cream-50 px-6 text-center dark:bg-cream-950">
+        <div className="flex min-h-dvh pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] flex-col items-center justify-center gap-4 bg-cream-50 px-6 text-center dark:bg-cream-950">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-2xl font-bold text-white shadow-lg shadow-brand-300/40">
             !
           </div>

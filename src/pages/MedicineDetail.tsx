@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getMedicineById } from '../lib/openfda'
 import { getLocalMedicineById, getRelatedLocalMedicines, enrichWithOpenFda, isLocalId } from '../lib/localMeds'
+import { getDbMedicineById, isDbId } from '../lib/dbMedicines'
 import type { Medicine, MedicineSection } from '../lib/types'
 import { useAppStore } from '../store/useAppStore'
 import { useListen } from '../components/ListenContext'
@@ -50,6 +51,16 @@ export function MedicineDetail() {
         }
         const enriched = await enrichWithOpenFda(local)
         if (!cancelled) setMedicine(enriched)
+        return
+      }
+
+      if (isDbId(id!)) {
+        const dbMed = await getDbMedicineById(id!)
+        if (!cancelled) {
+          setMedicine(dbMed)
+          setLoading(false)
+          if (dbMed) addRecentlyViewed({ medicineId: dbMed.id, brandName: dbMed.brandName, genericName: dbMed.genericName })
+        }
         return
       }
 

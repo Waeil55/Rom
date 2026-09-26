@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { searchMedicines } from '../lib/openfda'
 import { searchLocalMedicines } from '../lib/localMeds'
+import { fetchDbMedicines } from '../lib/dbMedicines'
 import type { Medicine } from '../lib/types'
 import { useAppStore } from '../store/useAppStore'
 import { BookmarkIcon } from '@heroicons/react/24/outline'
@@ -22,12 +23,27 @@ export function Medicines() {
     setErrorMsg(null)
     const local = searchLocalMedicines(q)
     setMedicines(local)
+
+    const term = q.trim().toLowerCase()
+    fetchDbMedicines().then((dbMeds) => {
+      if (cancelled) return
+      const matches = term
+        ? dbMeds.filter(
+            (m) =>
+              m.genericName.toLowerCase().includes(term) ||
+              m.brandName.toLowerCase().includes(term) ||
+              m.drugClass.toLowerCase().includes(term)
+          )
+        : dbMeds
+      setMedicines((prev) => [...matches, ...prev])
+    })
+
     searchMedicines(q, 30)
       .then((res) => {
         if (cancelled) return
-        const localGenerics = new Set(local.map((m) => m.genericName.toLowerCase()))
-        const extra = res.filter((m) => !localGenerics.has(m.genericName.toLowerCase()))
-        setMedicines([...local, ...extra])
+        const seenGenerics = new Set(local.map((m) => m.genericName.toLowerCase()))
+        const extra = res.filter((m) => !seenGenerics.has(m.genericName.toLowerCase()))
+        setMedicines((prev) => [...prev, ...extra])
       })
       .catch(() => {
         if (!cancelled && local.length === 0) {

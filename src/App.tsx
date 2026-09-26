@@ -20,6 +20,7 @@ import { Signup } from './pages/auth/Signup'
 import { ResetPassword } from './pages/auth/ResetPassword'
 import { NotFound } from './pages/NotFound'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
+import { AddMedicine } from './pages/admin/AddMedicine'
 import { Naplex } from './pages/Naplex'
 import { ListenHub } from './pages/ListenHub'
 import { Counseling } from './pages/Counseling'
@@ -75,6 +76,7 @@ export default function App() {
             <Route path="/settings" element={<Settings />} />
             <Route element={<AdminRoute />}>
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/add-medicine" element={<AddMedicine />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Route>

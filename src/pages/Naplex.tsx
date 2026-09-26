@@ -1,11 +1,17 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllLocalMedicines } from '../lib/localMeds'
+import { fetchDbMedicines } from '../lib/dbMedicines'
+import type { Medicine } from '../lib/types'
 import { ListenButton } from '../components/ListenButton'
 import { BackButton } from '../components/BackButton'
 
 export function Naplex() {
-  const all = useMemo(() => getAllLocalMedicines(), [])
+  const [dbMeds, setDbMeds] = useState<Medicine[]>([])
+  useEffect(() => {
+    void fetchDbMedicines().then(setDbMeds)
+  }, [])
+  const all = useMemo(() => [...getAllLocalMedicines(), ...dbMeds], [dbMeds])
   const [query, setQuery] = useState('')
 
   const byClass = useMemo(() => {

@@ -45,11 +45,17 @@ html.reduced-motion * {
   transition-duration: 0.001ms !important;
 }
 
+html, body, #root {
+  height: 100%;
+  min-height: 100dvh;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Plus Jakarta Sans", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
   @apply bg-cream-50 text-cream-900 dark:bg-cream-950 dark:text-orange-50;
 }
 

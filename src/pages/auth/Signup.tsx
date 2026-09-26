@@ -23,7 +23,7 @@ export function Signup() {
 
   if (done) {
     return (
-      <div className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-6 text-center">
+      <div className="mx-auto flex min-h-dvh pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] max-w-sm flex-col justify-center px-6 text-center">
         <h1 className="mb-2 text-2xl font-bold">Check your email</h1>
         <p className="text-slate-500">We sent a verification link to {email}. Confirm it to finish creating your account.</p>
         <Link to="/login" className="mt-4 text-brand-600 dark:text-brand-400">
@@ -34,7 +34,7 @@ export function Signup() {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-6">
+    <div className="mx-auto flex min-h-dvh pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] max-w-sm flex-col justify-center px-6">
       <h1 className="mb-1 text-2xl font-bold">Create account</h1>
       <p className="mb-6 text-slate-500">Start your pharmacy learning journey.</p>
 
