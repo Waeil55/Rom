@@ -11,10 +11,12 @@ import {
   AcademicCapIcon,
   SpeakerWaveIcon,
   ChatBubbleLeftRightIcon,
+  HeartIcon,
 } from '@heroicons/react/24/outline'
 
 const SECTIONS = [
   { to: '/naplex', label: 'NAPLEX 2026', icon: AcademicCapIcon, desc: 'Full board-prep hub, organized by drug class' },
+  { to: '/diseases', label: 'Diseases', icon: HeartIcon, desc: '162 conditions across 14 body systems, with flashcards & quiz' },
   { to: '/listen-hub', label: 'Listen Hub', icon: SpeakerWaveIcon, desc: 'Play one, many, or all 120 medications' },
   { to: '/counseling', label: 'Counseling Points', icon: ChatBubbleLeftRightIcon, desc: 'Every patient counseling point, searchable' },
 ]
@@ -39,7 +41,7 @@ export function Study() {
         <p className="text-slate-500">Pick a mode. Every card here works — no placeholders.</p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {SECTIONS.map((s) => (
           <Link
             key={s.label}

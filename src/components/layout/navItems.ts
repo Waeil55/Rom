@@ -8,6 +8,7 @@ import {
   AcademicCapIcon as NaplexIcon,
   SpeakerWaveIcon,
   ChatBubbleLeftRightIcon,
+  HeartIcon,
 } from '@heroicons/react/24/outline'
 
 export interface NavItem {
@@ -28,6 +29,7 @@ export const navItems: NavItem[] = [
 /** Extra sections — full desktop sidebar only; still reachable on mobile via cards on Home/Study/Learn. */
 export const moreNavItems: NavItem[] = [
   { to: '/naplex', label: 'NAPLEX 2026', icon: NaplexIcon },
+  { to: '/diseases', label: 'Diseases', icon: HeartIcon },
   { to: '/listen-hub', label: 'Listen Hub', icon: SpeakerWaveIcon },
   { to: '/counseling', label: 'Counseling Points', icon: ChatBubbleLeftRightIcon },
 ]

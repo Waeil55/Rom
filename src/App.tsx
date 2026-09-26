@@ -24,6 +24,10 @@ import { AddMedicine } from './pages/admin/AddMedicine'
 import { Naplex } from './pages/Naplex'
 import { ListenHub } from './pages/ListenHub'
 import { Counseling } from './pages/Counseling'
+import { Diseases } from './pages/Diseases'
+import { DiseaseDetail } from './pages/DiseaseDetail'
+import { DiseaseFlashcards } from './pages/study/DiseaseFlashcards'
+import { DiseaseQuiz } from './pages/study/DiseaseQuiz'
 
 function useThemeEffect() {
   const { theme, textSize, reducedMotion } = useAppStore()
@@ -73,6 +77,10 @@ export default function App() {
             <Route path="/naplex" element={<Naplex />} />
             <Route path="/listen-hub" element={<ListenHub />} />
             <Route path="/counseling" element={<Counseling />} />
+            <Route path="/diseases" element={<Diseases />} />
+            <Route path="/diseases/:id" element={<DiseaseDetail />} />
+            <Route path="/study/diseases/flashcards" element={<DiseaseFlashcards />} />
+            <Route path="/study/diseases/quiz" element={<DiseaseQuiz />} />
             <Route path="/settings" element={<Settings />} />
             <Route element={<AdminRoute />}>
               <Route path="/admin" element={<AdminDashboard />} />
