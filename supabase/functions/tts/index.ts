@@ -114,7 +114,8 @@ Deno.serve(async (req) => {
             { role: 'system', content: instruction },
             { role: 'user', content: text },
           ],
-          max_tokens: 700,
+          max_tokens: 350,
+          temperature: 0.3,
         }),
       })
       if (chatRes.ok) {
