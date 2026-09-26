@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-50: #fff8f1;
+  --color-brand-100: #fff2e6;
+  --color-brand-200: #ffd3c4;
+  --color-brand-300: #ffc266;
+  --color-brand-400: #ff9c40;
+  --color-brand-500: #ff8c42;
+  --color-brand-600: #f46b38;
+  --color-brand-700: #e85d36;
+  --color-brand-800: #d94828;
+  --color-brand-900: #a83a22;
+
+  --color-lilac-100: #efebf9;
+  --color-lilac-200: #e5daf9;
+  --color-lilac-300: #d1c2ee;
+  --color-lilac-400: #ac94de;
+  --color-lilac-500: #8f6fd1;
+
+  --color-cream-50: #faf7f2;
+  --color-cream-100: #fff8f3;
+  --color-cream-900: #3d261e;
+  --color-cream-950: #241712;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html[data-text-size="sm"] { font-size: 14px; }
+html[data-text-size="md"] { font-size: 16px; }
+html[data-text-size="lg"] { font-size: 18px; }
+html[data-text-size="xl"] { font-size: 20px; }
+
+html.reduced-motion * {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Plus Jakarta Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  @apply bg-cream-50 text-cream-900 dark:bg-cream-950 dark:text-orange-50;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { @apply bg-brand-200 dark:bg-cream-900 rounded-full; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
