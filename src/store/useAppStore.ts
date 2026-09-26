@@ -43,7 +43,7 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      theme: 'system',
+      theme: 'light',
       textSize: 'md',
       reducedMotion: false,
       audioSpeed: 1,
