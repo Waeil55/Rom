@@ -32,7 +32,7 @@ export function Learn() {
   const rows = useMemo(() => {
     const byClass = new Map<string, Medicine[]>()
     for (const m of allMeds) {
-      const key = m.drugClass
+      const key = m.category ?? m.drugClass
       if (!byClass.has(key)) byClass.set(key, [])
       byClass.get(key)!.push(m)
     }

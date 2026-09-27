@@ -4,6 +4,8 @@ export interface Medicine {
   genericName: string
   pronunciation: string | null
   drugClass: string
+  /** Broader grouping (e.g. body system) used for category views — falls back to drugClass when absent. */
+  category?: string
   manufacturer: string
   mechanism: string
   indications: string

@@ -30,8 +30,9 @@ export function Naplex() {
       : all
     const map = new Map<string, typeof all>()
     for (const m of filtered) {
-      if (!map.has(m.drugClass)) map.set(m.drugClass, [])
-      map.get(m.drugClass)!.push(m)
+      const key = m.category ?? m.drugClass
+      if (!map.has(key)) map.set(key, [])
+      map.get(key)!.push(m)
     }
     return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]))
   }, [all, query])

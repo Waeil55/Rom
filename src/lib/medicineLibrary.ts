@@ -38,6 +38,7 @@ export function libraryToMedicine(lib: LibraryMedicine): Medicine {
     genericName: lib.genericName,
     pronunciation: null,
     drugClass: lib.drugClass,
+    category: lib.category || lib.drugClass,
     manufacturer: 'Multiple manufacturers',
     mechanism: lib.mechanism || 'Not specified in source material.',
     indications: joinList(lib.indications),
